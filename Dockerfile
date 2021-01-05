@@ -4,43 +4,43 @@
 ##
 ##  I want mine to run Vanilla (not Paper) so I'm editing
 ##  it slightly to suit my needs.
+##
+##  It took me a long time to figure out where the volumes
+##  are stored in Windows using WSL2 subsystem:
+##  https://github.com/microsoft/WSL/discussions/4176
+##  \\wsl$\docker-desktop-data\version-pack-data\community\docker\volumes\serverjars
 ########################################################
 
+# Download and use a Java base image
+FROM openjdk:11
 
-########################################################
-############## We use a java base image ################
-########################################################
-FROM openjdk:11 AS build
-
-# This is a working directory within the OpenJDK Docker 
-# image that we downloaded above.
-WORKDIR /opt/minecraft
-
-# We store all the server jar's in a mounted volume and
-# retrieve them at runtime
+# Create a volume called that holds the .jar files for
+# the Minecraft server distributable
 VOLUME "/serverjars"
 
-# Copy the desired server JAR from the mounted volume
-ADD /serverjars/minecraft_server.1.16.4.jar /opt/minecraft/
+# Change to that directory within the Java container
+WORKDIR /serverjars
 
-# We need a user to actually run the process inside the
-# container, so create it here and grant it permissions
+# We actually want the .jar executable over in /opt so copy
+# it there now
+COPY minecraft_server.1.16.4.jar /opt/minecraft/
+
+# The executable requires a user account so make
+# an account with no privileges in case the server
+# gets compromised
 RUN useradd -ms /bin/bash minecraft && \
     chown minecraft /opt/minecraft -R
 
 # Switch to that user context
 USER minecraft
 
-########################################################
-############## Running environment #####################
-########################################################
-FROM openjdk:11 AS runtime
+# We have a second volume that holds world data
+# and allows us to persist it
+VOLUME "/serverdata"
 
-# Working directory
-WORKDIR /data
-
-# Volumes for the external data (Server, World, Config...)
-VOLUME "/data"
+# Change to that directory now so that when we run the
+# Java JAR it creates the output here
+WORKDIR /serverdata
 
 # Expose minecraft port
 EXPOSE 25565/tcp
@@ -54,7 +54,6 @@ ENV MEMORYSIZE=$memory_size
 ARG java_flags="-XX:+UseG1GC -XX:+ParallelRefProcEnabled -XX:MaxGCPauseMillis=200 -XX:+UnlockExperimentalVMOptions -XX:+DisableExplicitGC -XX:+AlwaysPreTouch -XX:G1NewSizePercent=30 -XX:G1MaxNewSizePercent=40 -XX:G1HeapRegionSize=8M -XX:G1ReservePercent=20 -XX:G1HeapWastePercent=5 -XX:G1MixedGCCountTarget=4 -XX:InitiatingHeapOccupancyPercent=15 -XX:G1MixedGCLiveThresholdPercent=90 -XX:G1RSetUpdatingPauseTimePercent=5 -XX:SurvivorRatio=32 -XX:+PerfDisableSharedMem -XX:MaxTenuringThreshold=1 -Dusing.aikars.flags=mcflags.emc.gs -Dcom.mojang.eula.agree=true"
 ENV JAVAFLAGS=$java_flags
 
-WORKDIR /data
-
 # Entrypoint with java optimisations
-ENTRYPOINT /usr/local/openjdk-11/bin/java -jar -Xms$MEMORYSIZE -Xmx$MEMORYSIZE $JAVAFLAGS /opt/minecraft/.jar --nojline nogui
+WORKDIR /serverdata
+ENTRYPOINT /usr/local/openjdk-11/bin/java -jar -Xms$MEMORYSIZE -Xmx$MEMORYSIZE $JAVAFLAGS /opt/minecraft/minecraft_server.1.16.4.jar
