@@ -58,4 +58,4 @@ ENV JAVAFLAGS=$java_flags
 
 # Entrypoint with java optimisations
 WORKDIR /serverdata
-ENTRYPOINT /usr/local/openjdk-18/bin/java -jar -Xms$MINMEMORYSIZE -Xmx$MAXMEMORYSIZE $JAVAFLAGS /opt/minecraft/minecraft_server.1.17.1.jar
+ENTRYPOINT /usr/java/openjdk-18/bin/java -jar -Xms$MINMEMORYSIZE -Xmx$MAXMEMORYSIZE $JAVAFLAGS /opt/minecraft/minecraft_server.1.17.1.jar
