@@ -23,7 +23,7 @@ WORKDIR /serverjars
 
 # We actually want the .jar executable over in /opt so copy
 # it there now
-COPY minecraft_server.1.17.1.jar /opt/minecraft/
+COPY minecraft_server.1.18.jar /opt/minecraft/
 
 # The executable requires a user account so make
 # an account with no privileges in case the server
@@ -47,9 +47,9 @@ EXPOSE 25565/tcp
 EXPOSE 25565/udp
 
 # Set memory size
-ARG min_memory_size=5G
+ARG min_memory_size=4G
 ENV MINMEMORYSIZE=$min_memory_size
-ARG max_memory_size=7G
+ARG max_memory_size=6G
 ENV MAXMEMORYSIZE=$max_memory_size
 
 # Set Java Flags
@@ -58,4 +58,4 @@ ENV JAVAFLAGS=$java_flags
 
 # Entrypoint with java optimisations
 WORKDIR /serverdata
-ENTRYPOINT /usr/java/openjdk-18/bin/java -jar -Xms$MINMEMORYSIZE -Xmx$MAXMEMORYSIZE $JAVAFLAGS /opt/minecraft/minecraft_server.1.17.1.jar
+ENTRYPOINT /usr/java/openjdk-18/bin/java -jar -Xms$MINMEMORYSIZE -Xmx$MAXMEMORYSIZE $JAVAFLAGS /opt/minecraft/minecraft_server.1.18.jar
