@@ -9,6 +9,11 @@
 ##  are stored in Windows using WSL2 subsystem:
 ##  https://github.com/microsoft/WSL/discussions/4176
 ##  \\wsl$\docker-desktop-data\version-pack-data\community\docker\volumes\serverjars
+##
+##  To build this container image, run the following in a
+##  terminal window:
+##  docker build -t calipsoii/minecraft-server:1.18.1 .
+##
 ########################################################
 
 # Download and use a Java base image
@@ -23,7 +28,7 @@ WORKDIR /serverjars
 
 # We actually want the .jar executable over in /opt so copy
 # it there now
-COPY minecraft_server.1.18.jar /opt/minecraft/
+COPY minecraft_server.1.18.1.jar /opt/minecraft/
 
 # The executable requires a user account so make
 # an account with no privileges in case the server
@@ -58,4 +63,4 @@ ENV JAVAFLAGS=$java_flags
 
 # Entrypoint with java optimisations
 WORKDIR /serverdata
-ENTRYPOINT /usr/java/openjdk-18/bin/java -jar -Xms$MINMEMORYSIZE -Xmx$MAXMEMORYSIZE $JAVAFLAGS /opt/minecraft/minecraft_server.1.18.jar
+ENTRYPOINT /usr/java/openjdk-18/bin/java -jar -Xms$MINMEMORYSIZE -Xmx$MAXMEMORYSIZE $JAVAFLAGS /opt/minecraft/minecraft_server.1.18.1.jar
