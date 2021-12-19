@@ -52,9 +52,9 @@ EXPOSE 25565/tcp
 EXPOSE 25565/udp
 
 # Set memory size
-ARG min_memory_size=4G
+ARG min_memory_size=2G
 ENV MINMEMORYSIZE=$min_memory_size
-ARG max_memory_size=6G
+ARG max_memory_size=3G
 ENV MAXMEMORYSIZE=$max_memory_size
 
 # Set Java Flags
