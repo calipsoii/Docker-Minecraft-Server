@@ -28,7 +28,7 @@ WORKDIR /serverjars
 
 # We actually want the .jar executable over in /opt so copy
 # it there now
-COPY minecraft_server.1.18.1.jar /opt/minecraft/
+COPY minecraft_server.1.18.2.jar /opt/minecraft/
 
 # The executable requires a user account so make
 # an account with no privileges in case the server
@@ -63,4 +63,4 @@ ENV JAVAFLAGS=$java_flags
 
 # Entrypoint with java optimisations
 WORKDIR /serverdata
-ENTRYPOINT /usr/java/openjdk-18/bin/java -jar -Xms$MINMEMORYSIZE -Xmx$MAXMEMORYSIZE $JAVAFLAGS /opt/minecraft/minecraft_server.1.18.1.jar
+ENTRYPOINT /usr/java/openjdk-18/bin/java -jar -Xms$MINMEMORYSIZE -Xmx$MAXMEMORYSIZE $JAVAFLAGS /opt/minecraft/minecraft_server.1.18.2.jar
