@@ -12,14 +12,14 @@
 ##
 ##  To build this container image, run the following in a
 ##  terminal window:
-##  docker build -t calipsoii/minecraft-server:1.18.1 .
+##  docker build -t calipsoii/minecraft-server:1.19 .
 ##
 ########################################################
 
 # Download and use a Java base image
 FROM openjdk:18
 
-# Create a volume called that holds the .jar files for
+# Create a volume that holds the .jar files for
 # the Minecraft server distributable
 VOLUME "/serverjars"
 
@@ -28,7 +28,9 @@ WORKDIR /serverjars
 
 # We actually want the .jar executable over in /opt so copy
 # it there now
-COPY minecraft_server.1.18.2.jar /opt/minecraft/
+ARG minecraft_server_ver="minecraft_server.1.19.jar"
+ENV minecraftserverver=$minecraft_server_ver
+COPY $minecraftserverver /opt/minecraft/
 
 # The executable requires a user account so make
 # an account with no privileges in case the server
@@ -63,4 +65,4 @@ ENV JAVAFLAGS=$java_flags
 
 # Entrypoint with java optimisations
 WORKDIR /serverdata
-ENTRYPOINT /usr/java/openjdk-18/bin/java -jar -Xms$MINMEMORYSIZE -Xmx$MAXMEMORYSIZE $JAVAFLAGS /opt/minecraft/minecraft_server.1.18.2.jar
+ENTRYPOINT /usr/java/openjdk-18/bin/java -jar -Xms$MINMEMORYSIZE -Xmx$MAXMEMORYSIZE $JAVAFLAGS /opt/minecraft/$minecraftserverver
