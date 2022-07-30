@@ -12,7 +12,7 @@
 ##
 ##  To build this container image, run the following in a
 ##  terminal window:
-##  docker build -t calipsoii/minecraft-server:1.19 .
+##  docker build -t calipsoii/minecraft-server:1.19.1 .
 ##
 ########################################################
 
@@ -28,7 +28,7 @@ WORKDIR /serverjars
 
 # We actually want the .jar executable over in /opt so copy
 # it there now
-ARG minecraft_server_ver="minecraft_server.1.19.jar"
+ARG minecraft_server_ver="minecraft_server.1.19.1.jar"
 ENV minecraftserverver=$minecraft_server_ver
 COPY $minecraftserverver /opt/minecraft/
 
