@@ -28,7 +28,7 @@ WORKDIR /serverjars
 
 # We actually want the .jar executable over in /opt so copy
 # it there now
-ARG minecraft_server_ver="minecraft_server.1.20.1.jar"
+ARG minecraft_server_ver="minecraft_server.1.20.2.jar"
 ENV minecraftserverver=$minecraft_server_ver
 COPY $minecraftserverver /opt/minecraft/
 
