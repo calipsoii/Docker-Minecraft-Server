@@ -12,7 +12,7 @@
 ##
 ##  To build this container image, run the following in a
 ##  terminal window:
-##  docker build -t calipsoii/minecraft-server:1.20.1 .
+##  docker build -t calipsoii/minecraft-server:1.20.2 .
 ##
 ########################################################
 
