@@ -17,7 +17,7 @@
 ########################################################
 
 # Download and use a Java base image
-FROM openjdk:18
+FROM amazoncorretto:latest
 
 # Create a volume that holds the .jar files for
 # the Minecraft server distributable
