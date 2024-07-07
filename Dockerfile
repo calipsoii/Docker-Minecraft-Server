@@ -19,6 +19,11 @@
 # Download and use a Java base image
 FROM amazoncorretto:latest
 
+# Needed to run the useradd utility on amazon image
+RUN yum -y install python3 \
+    python3-pip \
+    shadow-utils
+
 # Create a volume that holds the .jar files for
 # the Minecraft server distributable
 VOLUME "/serverjars"
@@ -35,7 +40,7 @@ COPY $minecraftserverver /opt/minecraft/
 # The executable requires a user account so make
 # an account with no privileges in case the server
 # gets compromised
-RUN useradd -ms /bin/bash minecraft && \
+RUN /usr/sbin/useradd -ms /bin/bash minecraft && \
     chown minecraft /opt/minecraft -R
 
 # Switch to that user context
