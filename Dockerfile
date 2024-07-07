@@ -16,8 +16,8 @@
 ##
 ########################################################
 
-# Download and use a Java base image
-FROM amazoncorretto:latest
+# Download and use a Java base image (we need 22)
+FROM amazoncorretto:22
 
 # Needed to run the useradd utility on amazon image
 RUN yum -y install python3 \
