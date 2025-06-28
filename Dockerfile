@@ -12,12 +12,12 @@
 ##
 ##  To build this container image, run the following in a
 ##  terminal window:
-##  docker build -t calipsoii/minecraft-server:1.21.4 .
+##  docker build -t calipsoii/minecraft-server:1.21.6 .
 ##
 ########################################################
 
 # Download and use a Java base image (we need 22)
-FROM amazoncorretto:21
+FROM amazoncorretto:latest
 
 # Needed to run the useradd utility on amazon image
 RUN yum -y install python3 \
@@ -33,7 +33,7 @@ WORKDIR /serverjars
 
 # We actually want the .jar executable over in /opt so copy
 # it there now
-ARG minecraft_server_ver="minecraft_server.1.21.4.jar"
+ARG minecraft_server_ver="minecraft_server.1.21.6.jar"
 ENV minecraftserverver=$minecraft_server_ver
 COPY $minecraftserverver /opt/minecraft/
 
