@@ -37,12 +37,6 @@ RUN useradd -ms /bin/bash minecraft
 VOLUME ["/serverdata"]
 WORKDIR /serverdata
 
-# Unpack and clean up
-RUN unzip bedrock-server.zip && \
-    rm bedrock-server.zip && \
-    chmod +x bedrock_server && \
-    chown -R minecraft:minecraft /serverdata
-
 # Switch to user context
 USER minecraft
 
