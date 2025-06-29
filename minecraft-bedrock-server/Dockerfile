@@ -9,11 +9,11 @@
 ##
 ##  docker run -it \
 ##  --name minecraft-bedrock-survival \
-##  --mount type=bind,source="/usr/minecraft-server/serverdata-bedrock-creative",target=/serverdata \
+##  --mount type=bind,source="/usr/minecraft-server/serverdata-bedrock-survival",target=/serverdata \
 ##  --mount type=bind,source="/usr/minecraft-server/serverjars",target=/serverjars \
 ##  --restart always \
 ##  -p 19132:19132/udp \
-##  minecraft-bedrock-server:1.21.92.1
+##  calipsoii/minecraft-bedrock-server:1.21.92.1
 ##
 ##
 ##
@@ -57,4 +57,4 @@ WORKDIR /serverdata
 EXPOSE 19132/udp
 
 # Launch server
-CMD ["/serverjars/bedrock_server"]
+CMD ["sh", "-c", "LD_LIBRARY_PATH=/serverjars /serverjars/bedrock_server"]
