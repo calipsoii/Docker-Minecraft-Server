@@ -33,28 +33,21 @@ RUN apt-get update && \
 # Create non-root user
 RUN useradd -ms /bin/bash minecraft
 
-# Working directory for server binary
-VOLUME ["/serverjars"]
-WORKDIR /serverjars
-
-# Copy Bedrock server zip file from build context
-COPY bedrock-server-1.21.92.1.zip ./bedrock-server.zip
+# Volume for world data/configs
+VOLUME ["/serverdata"]
+WORKDIR /serverdata
 
 # Unpack and clean up
 RUN unzip bedrock-server.zip && \
     rm bedrock-server.zip && \
     chmod +x bedrock_server && \
-    chown -R minecraft:minecraft /serverjars
+    chown -R minecraft:minecraft /serverdata
 
 # Switch to user context
 USER minecraft
-
-# Volume for world data/configs
-VOLUME ["/serverdata"]
-WORKDIR /serverdata
 
 # Expose Bedrock UDP port
 EXPOSE 19132/udp
 
 # Launch server
-CMD ["sh", "-c", "LD_LIBRARY_PATH=/serverjars /serverjars/bedrock_server"]
+CMD ["sh", "-c", "LD_LIBRARY_PATH=/serverdata /serverdata/bedrock_server"]
