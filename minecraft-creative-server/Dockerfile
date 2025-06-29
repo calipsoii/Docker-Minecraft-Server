@@ -25,7 +25,7 @@ FROM ubuntu:22.04
 # Environment config
 ENV DEBIAN_FRONTEND=noninteractive
 ENV BEDROCK_VERSION=1.21.92.1
-ENV BEDROCK_URL=https://minecraft.azureedge.net/bin-linux/bedrock-server-${BEDROCK_VERSION}.zip
+ENV BEDROCK_URL=https://www.minecraft.net/bedrockdedicatedserver/bin-linux/bedrock-server-${BEDROCK_VERSION}.zip
 
 # Install dependencies
 RUN apt-get update && \
