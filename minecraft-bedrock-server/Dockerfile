@@ -22,42 +22,39 @@
 # Use a minimal base image
 FROM ubuntu:22.04
 
-# Environment config
 ENV DEBIAN_FRONTEND=noninteractive
-ENV BEDROCK_VERSION=1.21.92.1
-ENV BEDROCK_URL=https://www.minecraft.net/bedrockdedicatedserver/bin-linux/bedrock-server-${BEDROCK_VERSION}.zip
 
-# Install dependencies
+# Install required dependencies
 RUN apt-get update && \
-    apt-get install -y curl unzip libcurl4 openssl ca-certificates && \
+    apt-get install -y unzip libcurl4 openssl ca-certificates && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
-# Create user
+# Create non-root user
 RUN useradd -ms /bin/bash minecraft
 
-# Working directory to store server binary (bind mount here)
+# Working directory for server binary
 VOLUME ["/serverjars"]
 WORKDIR /serverjars
 
-# Download the Bedrock server if not already mounted
-RUN curl -o bedrock-server.zip ${BEDROCK_URL} && \
-    unzip bedrock-server.zip && \
+# Copy Bedrock server zip file from build context
+COPY bedrock-server-1.21.92.1.zip ./bedrock-server.zip
+
+# Unpack and clean up
+RUN unzip bedrock-server.zip && \
     rm bedrock-server.zip && \
-    chmod +x bedrock_server
+    chmod +x bedrock_server && \
+    chown -R minecraft:minecraft /serverjars
 
-# Assign permissions
-RUN chown -R minecraft:minecraft /serverjars
-
-# Use non-root user
+# Switch to user context
 USER minecraft
 
-# Data will be bind-mounted to this location
+# Volume for world data/configs
 VOLUME ["/serverdata"]
 WORKDIR /serverdata
 
-# Expose Bedrock port
+# Expose Bedrock UDP port
 EXPOSE 19132/udp
 
-# Startup command
+# Launch server
 CMD ["/serverjars/bedrock_server"]
