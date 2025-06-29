@@ -10,7 +10,7 @@
 ##  docker run -it \
 ##  --name minecraft-bedrock-survival \
 ##  --mount type=bind,source="/usr/minecraft-server/serverdata-bedrock-creative",target=/serverdata \
-##  --mount type=bind,source="/usr/minecraft-server/serverjars-bedrock",target=/serverjars \
+##  --mount type=bind,source="/usr/minecraft-server/serverjars",target=/serverjars \
 ##  --restart always \
 ##  -p 19132:19132/udp \
 ##  minecraft-bedrock-server:1.21.92.1
